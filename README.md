@@ -8,6 +8,7 @@ The fun journey continues.
        - Apache Spark MLlib 
        - Predictive modelling 
        - Random Forests (Classification and Regression) 
+       - LIBSVM data format
 
     Key features
        - Increased model accuracy by increaing training data size and quality 
