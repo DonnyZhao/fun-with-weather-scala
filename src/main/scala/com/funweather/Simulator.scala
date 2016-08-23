@@ -35,7 +35,7 @@ object ConditionModel extends SparkBase {
 
   /**
     * Build predictive model (Classification)
-    * @return
+    * @return Predictive model for weather condition
     */
   def build(): RandomForestModel = {
     val sc = new SparkContext(conf)
@@ -68,7 +68,7 @@ object SensorModel extends SparkBase {
   /**
     * Build predictive models for sensors (Temperature/Pressure/Humidity)
     * @param trainingFilePath file path for the training data
-    * @return
+    * @return Predictive model for weather sensors
     */
   def build(trainingFilePath: String): RandomForestModel = {
     val sc = new SparkContext(conf)
