@@ -11,9 +11,6 @@ libraryDependencies ++= Seq(
   "org.scalanlp" %% "breeze" % "0.11.2",
   "org.scalanlp" %% "breeze-natives" % "0.11.2",
   "org.scalanlp" %% "breeze-viz" % "0.11.2",
-  "org.scala-saddle" %% "saddle-core" % "1.3.+",
-  "com.github.tototoshi" %% "scala-csv" % "1.1.2",
-  "com.github.martincooper" %% "scala-datatable" % "0.7.0",
   "org.apache.spark" % "spark-core_2.11" % "2.0.0",
   "org.apache.spark" % "spark-mllib_2.11" % "2.0.0"
 )
