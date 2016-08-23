@@ -5,7 +5,7 @@ The fun journey continues.
 
     Technology stack
        - Scala 
-       - Apache Spark MLib 
+       - Apache Spark MLlib 
        - Predictive modelling 
        - Random Forests (Classification and Regression) 
 
