@@ -20,9 +20,8 @@ The fun journey continues.
        - Feed new data (time&location) the established predictive models to generate the simulated weather data
 
     Usage
-     displayed in the console.
        - sbt test or ./activator test 
-       - Users may also want to modify or add test scenarios WeatherSimulator.scala
+       - Users may also want to modify or add test scenarios in WeatherSimulator.scala
 
     TODO
        - Add training set from real weather data to make the simulation more realitic 
