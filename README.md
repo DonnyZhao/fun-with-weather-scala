@@ -1,1 +1,1 @@
-# fun-with-weather-scala
+The fun journey continues.
