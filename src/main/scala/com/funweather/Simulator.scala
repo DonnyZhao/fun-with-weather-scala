@@ -9,7 +9,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 /**
   * Created by lshang on 8/21/16.
   *
-  * A weather simulator to generate weather conditions and sensor measurements (Temperature/Pressure/Humidity)
+  * A weather simulator to generate weather conditions and sensor measurements (Temperature/Pressure/Humidity).
   * Predictive models are established based on training data sets. Simulated weather data can then be produced
   * with a new time&position pair.
   *
