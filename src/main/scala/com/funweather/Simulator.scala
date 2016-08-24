@@ -32,6 +32,7 @@ object ConditionModel extends SparkBase {
 
   /**
     * Build predictive model (Classification)
+    *
     * @return Predictive model for weather condition
     */
   def build(trainingFileName: String): RandomForestModel = {
@@ -63,6 +64,7 @@ object SensorModel extends SparkBase {
 
   /**
     * Build predictive model (Regression) for sensor Temperature/Pressure/Humidity
+    *
     * @param trainingFileName file path for the training data
     * @return Predictive model for weather sensors
     */
@@ -101,6 +103,7 @@ object Simulator {
 
   /**
     * Build models for weather (Condition, Temperature/Pressure/Humidity)
+    *
     * @return Predictive models
     */
   def buildModels(): Map[String, RandomForestModel] = {
@@ -109,8 +112,9 @@ object Simulator {
 
   /**
     * Generate a sample using established predictive models
+    *
     * @param localTime ISO8601 date time
-    * @param position A triple containing latitude, longitude and elevation
+    * @param position  A triple containing latitude, longitude and elevation
     * @return A generated weather sample containing CONDITION, TEMPERATURE, PRESSURE and HUMIDITY
     */
   def generateSample(localTime: LocalTime, position: Position): Map[String, Double] = {
