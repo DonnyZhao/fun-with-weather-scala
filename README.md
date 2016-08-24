@@ -16,10 +16,10 @@ The fun journey continues.
 
     Simulation methodology 
        - Struture the weather observations into training sets (in LIBSVM format):
-           - condition.txt
-           - temperature.txt
-           - pressure.txt
-           - humidity.txt
+           - Condition.txt
+           - Temperature.txt
+           - Pressure.txt
+           - Hmidity.txt
        - Build classification model for weather conditions 
        - Build regression models for weather sensors measurements (Temperature/Pressure/Humidity) 
        - Feed new data (time&location) the established predictive models to generate the simulated weather data
