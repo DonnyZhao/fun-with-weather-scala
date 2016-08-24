@@ -41,7 +41,7 @@ object ConditionModel extends SparkBase {
     val sc = new SparkContext(conf)
 
     // data
-    val fileName = "condition.txt"
+    val fileName = "Condition.txt"
     val trainingFilePath = Paths.get(TrainingData.PATH, fileName).toString
     val data = MLUtils.loadLibSVMFile(sc, trainingFilePath)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
@@ -67,14 +67,16 @@ object SensorModel extends SparkBase {
 
   /**
     * Build predictive models for sensors (Temperature/Pressure/Humidity)
-    * @param trainingFilePath file path for the training data
+    * @param trainingFileName file path for the training data
     * @return Predictive model for weather sensors
     */
-  def build(trainingFilePath: String): RandomForestModel = {
+  def build(trainingFileName: String): RandomForestModel = {
+
+    val path = TrainingData.PATH + trainingFileName + ".txt"
     val sc = new SparkContext(conf)
 
     // data
-    val data = MLUtils.loadLibSVMFile(sc, trainingFilePath)
+    val data = MLUtils.loadLibSVMFile(sc, path.toString)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
 
@@ -93,48 +95,6 @@ object SensorModel extends SparkBase {
   }
 }
 
-object TemperatureModel {
-  val model = build()
-
-  /**
-    * Build predictive model (Regression)
-    * @return
-    */
-  def build(): RandomForestModel = {
-    val fileName = "temperature.txt"
-    val path = Paths.get(TrainingData.PATH, fileName)
-    SensorModel.build(path.toString)
-  }
-}
-
-object PressureModel {
-  val model = build()
-
-  /**
-    * Build predictive model (Regression)
-    * @return
-    */
-  def build(): RandomForestModel = {
-    val fileName = "pressure.txt"
-    val path = Paths.get(TrainingData.PATH, fileName)
-    SensorModel.build(path.toString)
-  }
-}
-
-object HumidityModel {
-  val model = build()
-
-  /**
-    * Build predictive model (Regression)
-    * @return
-    */
-  def build(): RandomForestModel = {
-    val fileName = "humidity.txt"
-    val path = Paths.get(TrainingData.PATH, fileName)
-    SensorModel.build(path.toString)
-  }
-}
-
 object Simulator {
   val models = buildModels()
 
@@ -143,12 +103,11 @@ object Simulator {
     * @return
     */
   def buildModels(): Map[String, RandomForestModel] = {
-    Map(
-      "Condition" -> ConditionModel.model,
-      "Temperature" -> TemperatureModel.model,
-      "Pressure" -> PressureModel.model,
-      "Humidity" -> HumidityModel.model
-    )
+    val sensors = List("Temperature", "Pressure", "Humidity")
+    val sensorModels = Map(sensors map {s => s -> SensorModel.build(s)}: _*)
+    val condModel = Map("Condition" -> ConditionModel.model)
+    val models = condModel ++ sensorModels
+    models
   }
 
   /**
