@@ -31,19 +31,17 @@ trait SparkBase {
 }
 
 object ConditionModel extends SparkBase {
-  val model = build()
 
   /**
     * Build predictive model (Classification)
     * @return Predictive model for weather condition
     */
-  def build(): RandomForestModel = {
+  def build(trainingFileName: String): RandomForestModel = {
     val sc = new SparkContext(conf)
 
     // data
-    val fileName = "Condition.txt"
-    val trainingFilePath = Paths.get(TrainingData.PATH, fileName).toString
-    val data = MLUtils.loadLibSVMFile(sc, trainingFilePath)
+    val path = TrainingData.PATH + trainingFileName + ".txt"
+    val data = MLUtils.loadLibSVMFile(sc, path.toString)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
 
@@ -72,10 +70,10 @@ object SensorModel extends SparkBase {
     */
   def build(trainingFileName: String): RandomForestModel = {
 
-    val path = TrainingData.PATH + trainingFileName + ".txt"
     val sc = new SparkContext(conf)
 
     // data
+    val path = TrainingData.PATH + trainingFileName + ".txt"
     val data = MLUtils.loadLibSVMFile(sc, path.toString)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
@@ -104,7 +102,7 @@ object Simulator {
     */
   def buildModels(): Map[String, RandomForestModel] = {
     val sensorModels = List("Temperature", "Pressure", "Humidity").map(s => s -> SensorModel.build(s)).toMap
-    val conditionModel = Map("Condition" -> ConditionModel.model)
+    val conditionModel = List("Condition").map(m => m -> ConditionModel.build(m)).toMap
     val models = conditionModel ++ sensorModels
     models
   }
