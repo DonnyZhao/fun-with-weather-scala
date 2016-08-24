@@ -1,4 +1,4 @@
-An implemention of a fun weather simulator in Scala programming language.
+An implementation of a fun weather simulator in Scala programming language.
 
 The fun journey continues.
 
@@ -15,11 +15,13 @@ The fun journey continues.
        - Flexible for future extensions 
 
     Simulation methodology 
-       - Struture the weather observations into training sets (in LIBSVM format):
+       - The environment (atmosphere, topography, geography and oceanography) is summarised by the
+         training samples with the attributes of position, time, weather conditions and sensor measurements  
+       - Struture the enviroment and observations into training sets (in LIBSVM format):
            - Condition.txt
            - Temperature.txt
            - Pressure.txt
-           - Hmidity.txt
+           - Humidity.txt
        - Build classification model for weather conditions 
        - Build regression models for weather sensors measurements (Temperature/Pressure/Humidity) 
        - Feed new data (time&location) the established predictive models to generate the simulated weather data
