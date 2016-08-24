@@ -32,7 +32,7 @@ The fun journey continues.
        - sbt "run-main com.funweather.WeatherSimulator"
        - sbt "run-main com.funweather.WeatherSimulator [latitude] [longitude] [elevation] [time stamp] 
        - Users may also want to modify or add test scenarios in WeatherSimulator.scala and ./activator run from terminal
-       - Open the sbt project using your favarite IDE and run the tests and WeatherSimulator 
+       - Open the sbt project using your favorite IDE and run the tests and WeatherSimulator 
 
     TODO
        - Use R package rscala to integrate R scripts in fun-with-weather-R to produce training data and for
