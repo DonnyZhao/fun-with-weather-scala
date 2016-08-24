@@ -36,18 +36,18 @@ case class Measurement(number: Int,
 
     val sample = Simulator.generateSample(localTime, position)
 
-    val cond = Option(Condition.apply(sample("Condition").toInt))
+    val condition = Option(Condition.apply(sample("Condition").toInt))
     val temperature = Option(Temperature(sample("Temperature")))
     val pressure = Option(Pressure(sample("Pressure")))
     val humidity = Option(Humidity(sample("Humidity")))
 
     val mappedLocation = LocationPosition.map.map(_.swap).get(position).orElse(location)
 
-    Measurement(number, position, localTime, mappedLocation, cond, temperature, pressure, humidity)
+    Measurement(number, position, localTime, mappedLocation, condition, temperature, pressure, humidity)
   }
 
   override def toString: String = {
-    "%d|%s|%s|%s|%s|%.2f|%.2f|%.2f".format(number, location.getOrElse("None"), position.toString, localTime.timeStamp,
+    "%d|%s|%s|%s|%s|%+.2f|%.2f|%.2f".format(number, location.getOrElse("None"), position.toString, localTime.timeStamp,
       condition.getOrElse("None"), temperature.get.value, pressure.get.value, humidity.get.value)
   }
 

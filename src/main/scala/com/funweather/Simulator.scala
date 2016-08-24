@@ -66,7 +66,7 @@ object ConditionModel extends SparkBase {
 object SensorModel extends SparkBase {
 
   /**
-    * Build predictive models for sensors (Temperature/Pressure/Humidity)
+    * Build predictive model (Regression) for sensor Temperature/Pressure/Humidity
     * @param trainingFileName file path for the training data
     * @return Predictive model for weather sensors
     */
@@ -103,10 +103,9 @@ object Simulator {
     * @return
     */
   def buildModels(): Map[String, RandomForestModel] = {
-    val sensors = List("Temperature", "Pressure", "Humidity")
-    val sensorModels = Map(sensors map {s => s -> SensorModel.build(s)}: _*)
-    val condModel = Map("Condition" -> ConditionModel.model)
-    val models = condModel ++ sensorModels
+    val sensorModels = List("Temperature", "Pressure", "Humidity").map(s => s -> SensorModel.build(s)).toMap
+    val conditionModel = Map("Condition" -> ConditionModel.model)
+    val models = conditionModel ++ sensorModels
     models
   }
 
