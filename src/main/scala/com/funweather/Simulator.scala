@@ -35,16 +35,15 @@ object ConditionModel extends SparkBase {
     *
     * @return Predictive model for weather condition
     */
-  def build(trainingFileName: String): RandomForestModel = {
-    val sc = new SparkContext(conf)
+  def build(sc: SparkContext, trainingFileName: String): RandomForestModel = {
 
     // data
     val path = TrainingData.PATH + trainingFileName + ".txt"
-    val data = MLUtils.loadLibSVMFile(sc, path.toString)
+    val data = MLUtils.loadLibSVMFile(sc, path)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
 
-    // train a RandomForest model
+    // train a RandomForest model - Classification
     val numClasses = Condition.maxId
     val categoricalFeaturesInfo = Map[Int, Int]()
     val numTrees = 10 // can be more
@@ -55,7 +54,6 @@ object ConditionModel extends SparkBase {
     val model = RandomForest.trainClassifier(trainingData, numClasses, categoricalFeaturesInfo,
       numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins)
 
-    sc.stop()
     model
   }
 }
@@ -68,17 +66,15 @@ object SensorModel extends SparkBase {
     * @param trainingFileName file path for the training data
     * @return Predictive model for weather sensors
     */
-  def build(trainingFileName: String): RandomForestModel = {
-
-    val sc = new SparkContext(conf)
+  def build(sc: SparkContext, trainingFileName: String): RandomForestModel = {
 
     // data
     val path = TrainingData.PATH + trainingFileName + ".txt"
-    val data = MLUtils.loadLibSVMFile(sc, path.toString)
+    val data = MLUtils.loadLibSVMFile(sc, path)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
 
-    // train a RandomForest model
+    // train a RandomForest model - Regression
     val categoricalFeaturesInfo = Map[Int, Int]()
     val numTrees = 5 // can be more
     val featureSubsetStrategy = "auto"
@@ -88,17 +84,16 @@ object SensorModel extends SparkBase {
     val model = RandomForest.trainRegressor(trainingData, categoricalFeaturesInfo,
       numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins)
 
-    sc.stop()
     model
   }
 }
 
-object Simulator {
+object Simulator extends SparkBase {
   val models = buildModels()
 
-  private def buildModel(modelName: String): RandomForestModel = modelName match {
-    case "Condition" => ConditionModel.build(modelName)
-    case _ => SensorModel.build(modelName)
+  private def buildModel(sc: SparkContext, modelName: String): RandomForestModel = modelName match {
+    case "Condition" => ConditionModel.build(sc, modelName)
+    case _ => SensorModel.build(sc, modelName)
   }
 
   /**
@@ -107,7 +102,10 @@ object Simulator {
     * @return Predictive models
     */
   def buildModels(): Map[String, RandomForestModel] = {
-    List("Temperature", "Pressure", "Humidity", "Condition").map(m => m -> buildModel(m)).toMap
+    val sc = new SparkContext(conf)
+    val models = List("Temperature", "Pressure", "Humidity", "Condition").map(m => m -> buildModel(sc, m)).toMap
+    sc.stop()
+    models
   }
 
   /**
