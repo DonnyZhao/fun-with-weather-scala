@@ -1,7 +1,5 @@
 package com.funweather
 
-import java.nio.file.Paths
-
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.tree.RandomForest
 import org.apache.spark.mllib.tree.model.RandomForestModel
@@ -96,15 +94,17 @@ object SensorModel extends SparkBase {
 object Simulator {
   val models = buildModels()
 
+  private def buildModel(modelName: String): RandomForestModel = modelName match {
+    case "Condition" => ConditionModel.build(modelName)
+    case _ => SensorModel.build(modelName)
+  }
+
   /**
     * Build models for weather (Condition, Temperature/Pressure/Humidity)
-    * @return
+    * @return Predictive models
     */
   def buildModels(): Map[String, RandomForestModel] = {
-    val sensorModels = List("Temperature", "Pressure", "Humidity").map(s => s -> SensorModel.build(s)).toMap
-    val conditionModel = List("Condition").map(m => m -> ConditionModel.build(m)).toMap
-    val models = conditionModel ++ sensorModels
-    models
+    List("Temperature", "Pressure", "Humidity", "Condition").map(m => m -> buildModel(m)).toMap
   }
 
   /**
