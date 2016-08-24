@@ -37,6 +37,6 @@ The fun journey continues.
     TODO
        - Use R package rscala to integrate R scripts in fun-with-weather-R to produce training data and for
          data visualisation
-       - Add training set from real weather data to make the simulation more realitic 
+       - Add training set from real weather data to make the simulation more realistic 
        - Feature engineering to extract more information from the time stamps, i.e. hour of the day, month of the 
          year to increase model accuracy
