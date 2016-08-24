@@ -26,7 +26,7 @@ The fun journey continues.
 
     Usage
        - sbt test or ./activator test 
-       - Users may also want to modify or add test scenarios in WeatherSimulator.scala
+       - Users may also want to modify or add test scenarios in WeatherSimulator.scala and ./activator run from terminal
 
     TODO
        - Use R package rscala to integrate R scripts in fun-with-weather-R to produce training data and for
