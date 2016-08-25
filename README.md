@@ -33,6 +33,9 @@ The fun journey continues.
        - sbt "run-main com.funweather.WeatherSimulator [latitude] [longitude] [elevation] [time stamp] 
        - Users may also want to modify or add test scenarios in WeatherSimulator.scala and ./activator run from terminal
        - Open the sbt project using your favorite IDE and run the tests and WeatherSimulator 
+            - If IntelliJ encounters error 
+                    thread "main" java.lang.IllegalArgumentException: System memory 259522560 must be at least 4.718592E8. Please ...
+              set the VM options in Run/Debug Configurations to: -Xms128m -Xmx512m -XX:MaxPermSize=300m -ea
 
     TODO
        - Use R package rscala to integrate R scripts in fun-with-weather-R to produce training data and for
