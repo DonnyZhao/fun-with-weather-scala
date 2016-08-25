@@ -94,9 +94,9 @@ object Model {
 
   }
 
-  def apply(s: String): Model = {
-    if (s == "Condition") new Condition(s)
-    else new Sensor(s)
+  def apply(modelName: String): Model = {
+    if (modelName == "Condition") new Condition(modelName)
+    else new Sensor(modelName)
   }
 
 }
