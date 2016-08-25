@@ -22,7 +22,7 @@ object WeatherSimulator {
 
     // Scenario
     println("Scenario - Sydney weather over the next few days...")
-    val numOfDays = Poisson(5).draw()
+    val numOfDays = Poisson(5).draw() + 1
     List.range(0, numOfDays).foreach(i => {
       val timeStamp = startDate.plusDays(i)
       val formattedDateTime = timeStamp.format(formatter)
@@ -34,15 +34,16 @@ object WeatherSimulator {
     // Scenario
     println("Scenario - weather of some random locations on the surface of planet Earth over the next few days...")
     val poi = Poisson(5)
-    val numOfLocations = poi.draw()
+    val numOfLocations = poi.draw() + 1
     val uni = Uniform(0, LocationPosition.map.size)
     val sequence = uni.sample(numOfLocations).map(u => floor(u)).map(n => n.toInt)
     val locations = sequence.map(i => LocationPosition.map.toIndexedSeq.apply(i))
 
     List.range(0, locations.size).foreach(i => {
-      val timeStamp = startDate.plusDays(i).toString
+      val timeStamp = startDate.plusDays(i)
+      val formattedDateTime = timeStamp.format(formatter)
       val position = locations.apply(i)._2
-      println(Measurement(i, position, LocalTime(timeStamp)).emit())
+      println(Measurement(i, position, LocalTime(formattedDateTime)).emit())
     })
 
   }
