@@ -111,7 +111,7 @@ object Simulator extends SparkBase {
     */
   def buildModels(): Map[String, RandomForestModel] = {
     val sc = new SparkContext(conf)
-    val models = List("Temperature", "Pressure", "Humidity", "Condition").map(m => m -> Model.apply(m).build(sc)).toMap
+    val models = List(Temperature, Pressure, Humidity, Condition).map(v => v.toString).map(m => m -> Model.apply(m).build(sc)).toMap
     sc.stop()
     models
   }
