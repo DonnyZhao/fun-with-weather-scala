@@ -42,8 +42,8 @@ object Model {
       *
       * Build predictive model (Classification)
       *
-      * @param training training data set
-      * @return
+      * @param training Training data set
+      * @return Predictive model for weather condition
       */
     override def build(training: RDD[LabeledPoint]): RandomForestModel = {
 
@@ -67,8 +67,8 @@ object Model {
       *
       * Build predictive model (Regression) for sensor Temperature/Pressure/Humidity
       *
-      * @param training training data set
-      * @return
+      * @param training Training data set
+      * @return Prediction model for weather sensors
       */
     override def build(training: RDD[LabeledPoint]): RandomForestModel = {
 
