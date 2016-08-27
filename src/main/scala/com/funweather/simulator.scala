@@ -19,18 +19,18 @@ import org.apache.spark.{SparkConf, SparkContext}
   * The training data sets are in LIBSVM format
   */
 
-trait TrainingData {
-  val root = "src/main/resources/training/"
+sealed trait TrainingData {
+  val ROOT = "src/main/resources/training/"
 }
 
-trait SparkBase {
+sealed trait SparkBase {
   private val master = "local[*]"
   private val appName = this.getClass.getSimpleName
 
   val conf = new SparkConf().setMaster(master).setAppName(appName)
 }
 
-trait Model {
+sealed trait Model {
   def build(training: RDD[LabeledPoint]): RandomForestModel
 }
 
@@ -97,7 +97,7 @@ object Simulator extends SparkBase with TrainingData {
   val models = buildModels()
 
   def loadTrainingData(sc: SparkContext, fileName: String): RDD[LabeledPoint] = {
-    val path = root + fileName + ".txt"
+    val path = ROOT + fileName + ".txt"
     val data = MLUtils.loadLibSVMFile(sc, path)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
