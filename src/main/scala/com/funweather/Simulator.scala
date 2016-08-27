@@ -19,8 +19,8 @@ import org.apache.spark.{SparkConf, SparkContext}
   * The training data sets are in LIBSVM format
   */
 
-object TrainingData {
-  val PATH = "src/main/resources/training/"
+trait TrainingData {
+  val root = "src/main/resources/training/"
 }
 
 trait SparkBase {
@@ -93,11 +93,11 @@ object Model {
 
 }
 
-object Simulator extends SparkBase {
+object Simulator extends SparkBase with TrainingData {
   val models = buildModels()
 
   def loadTrainingData(sc: SparkContext, fileName: String): RDD[LabeledPoint] = {
-    val path = TrainingData.PATH + fileName + ".txt"
+    val path = root + fileName + ".txt"
     val data = MLUtils.loadLibSVMFile(sc, path)
     val splits = data.randomSplit(Array(0.7, 0.3), seed = 123L)
     val (trainingData, _) = (splits(0), splits(1))
