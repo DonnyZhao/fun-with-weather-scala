@@ -31,7 +31,7 @@ trait SparkBase {
 }
 
 trait Model {
-  def build(sc: SparkContext, training: RDD[LabeledPoint]): RandomForestModel
+  def build(training: RDD[LabeledPoint]): RandomForestModel
 }
 
 object Model {
@@ -42,11 +42,10 @@ object Model {
       *
       * Build predictive model (Classification)
       *
-      * @param sc       SparkContext
       * @param training training data set
       * @return
       */
-    override def build(sc: SparkContext, training: RDD[LabeledPoint]): RandomForestModel = {
+    override def build(training: RDD[LabeledPoint]): RandomForestModel = {
 
       val numClasses = Condition.maxId
       val categoricalFeaturesInfo = Map[Int, Int]()
@@ -68,11 +67,10 @@ object Model {
       *
       * Build predictive model (Regression) for sensor Temperature/Pressure/Humidity
       *
-      * @param sc       SparkContext
       * @param training training data set
       * @return
       */
-    override def build(sc: SparkContext, training: RDD[LabeledPoint]): RandomForestModel = {
+    override def build(training: RDD[LabeledPoint]): RandomForestModel = {
 
       val categoricalFeaturesInfo = Map[Int, Int]()
       val numTrees = 5 // can be more
@@ -114,7 +112,7 @@ object Simulator extends SparkBase {
   def buildModels(): Map[String, RandomForestModel] = {
     val sc = new SparkContext(conf)
     val models = List(Temperature, Pressure, Humidity, Condition)
-      .map(v => v.toString).map(m => m -> Model.apply(m).build(sc, loadTrainingData(sc, m))).toMap
+      .map(v => v.toString).map(m => m -> Model.apply(m).build(loadTrainingData(sc, m))).toMap
     sc.stop()
     models
   }
