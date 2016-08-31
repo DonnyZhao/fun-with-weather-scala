@@ -22,17 +22,17 @@ case class Measurement(number: Int,
                        position: Position, localTime: LocalTime,
                        location: Option[String] = None,
                        condition: Option[Condition] = None,
-                       temperature: Option[Temperature] = Some(Temperature()),
-                       pressure: Option[Pressure] = Some(Pressure()),
-                       humidity: Option[Humidity] = Some(Humidity())
+                       temperature: Option[Temperature] = None,
+                       pressure: Option[Pressure] = None,
+                       humidity: Option[Humidity] = None
                       ) {
   measurement =>
 
   def emit(): Measurement = {
     require(measurement.condition.isEmpty, "Measurement has weather data already")
-    require(measurement.temperature.get.value.isNaN, "Measurement has weather data already")
-    require(measurement.pressure.get.value.isNaN, "Measurement has weather data already")
-    require(measurement.humidity.get.value.isNaN, "Measurement has weather data already")
+    require(measurement.temperature.isEmpty, "Measurement has weather data already")
+    require(measurement.pressure.isEmpty, "Measurement has weather data already")
+    require(measurement.humidity.isEmpty, "Measurement has weather data already")
 
     val sample = Simulator.generateSample(localTime, position)
 
