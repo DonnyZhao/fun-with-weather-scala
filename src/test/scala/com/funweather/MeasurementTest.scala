@@ -24,4 +24,9 @@ class MeasurementTest extends UnitTest("Measurement") {
     }
   }
 
+  it should "toString before and after emit" in {
+    Measurement(1, Position(0.0, 0.0, 0.0), LocalTime("2016-08-20T00:00:00")).toString should not be empty
+    Measurement(1, Position(0.0, 0.0, 0.0), LocalTime("2016-08-20T00:00:00")).emit.toString should not be empty
+  }
+
 }
