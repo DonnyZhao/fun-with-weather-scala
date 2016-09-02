@@ -46,7 +46,7 @@ case class Measurement(number: Int,
     Measurement(number, position, localTime, mappedLocation, condition, temperature, pressure, humidity)
   }
 
-  override def toString: String = {
+  override def toString = {
     "%d|%s|%s|%s|%s|%+.2f|%.2f|%.2f".format(number, location.getOrElse("None"), position.toString, localTime.timeStamp,
       condition.getOrElse("None"), temperature.get.value, pressure.get.value, humidity.get.value)
   }

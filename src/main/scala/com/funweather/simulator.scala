@@ -121,7 +121,7 @@ object Simulator extends SparkBase with TrainingData {
     * Generate a sample using established predictive models
     *
     * @param localTime ISO8601 date time
-    * @param position  A triple containing latitude, longitude and elevation
+    * @param position  A triplet containing latitude, longitude and elevation
     * @return A generated weather sample containing CONDITION, TEMPERATURE, PRESSURE and HUMIDITY
     */
   def generateSample(localTime: LocalTime, position: Position): Map[String, Double] = {
