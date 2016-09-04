@@ -26,7 +26,7 @@ class WeatherSimulatorSpec extends FunSpec with Matchers {
         val numOfSamples = 10
         val samples = uni.sample(numOfSamples)
 
-        samples shouldBe a [IndexedSeq[Double]]
+        samples shouldBe a [IndexedSeq[_]]
         samples should have size numOfSamples
 
         samples.foreach(sample => sample should be (lo +- hi))
