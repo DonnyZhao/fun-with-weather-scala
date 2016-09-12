@@ -3,8 +3,8 @@ package com.funweather
 import java.time.LocalDateTime
 import java.time.format.{DateTimeFormatter, DateTimeParseException}
 
-import breeze.numerics.floor
-import breeze.stats.distributions.{Poisson, Uniform}
+import breeze.stats.distributions.Poisson
+import probability_monad.Distribution._
 
 /**
   * Created by lshang on 8/20/16.
@@ -23,7 +23,7 @@ object WeatherSimulator {
     // Scenario
     println("Scenario - Sydney weather over the next few days...")
     val numOfDays = Poisson(5).draw() + 1
-    List.range(0, numOfDays).foreach(i => {
+    Range(0, numOfDays).foreach(i => {
       val timeStamp = startDate.plusDays(i)
       val formattedDateTime = timeStamp.format(formatter)
       println(Measurement(i, Position(-33.86, 151.21, 39.0), LocalTime(formattedDateTime)).emit())
@@ -35,11 +35,11 @@ object WeatherSimulator {
     println("Scenario - weather of some random locations on the surface of planet Earth over the next few days...")
     val poi = Poisson(5)
     val numOfLocations = poi.draw() + 1
-    val uni = Uniform(0, LocationPosition.map.size)
-    val sequence = uni.sample(numOfLocations).map(u => floor(u)).map(n => n.toInt)
+
+    val sequence = discreteUniform(0 until LocationPosition.map.size).sample(numOfLocations)
     val locations = sequence.map(i => LocationPosition.map.toIndexedSeq.apply(i))
 
-    List.range(0, locations.size).foreach(i => {
+    locations.indices.foreach(i => {
       val timeStamp = startDate.plusDays(i)
       val formattedDateTime = timeStamp.format(formatter)
       val position = locations.apply(i)._2
