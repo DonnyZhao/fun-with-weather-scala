@@ -12,8 +12,8 @@ object MarkovChainExamples extends App {
 
   def transition(condition: Int): Distribution[Int] = condition match {
     case 0 => discrete(0 -> 1 / 3, 1 -> 1 / 3, 2 -> 1 / 3)
-    case 1 => discrete(0 -> 0.1, 1 -> 0.8, 2 -> 0.1)
-    case 2 => discrete(0 -> 0.99, 1 -> 0.01, 2 -> 0)
+    case 1 => discrete(0 -> 0.10,  1 -> 0.80,  2 -> 0.10)
+    case 2 => discrete(0 -> 0.99,  1 -> 0.01,  2 -> 0.00)
   }
 
   def chain(num: Int): Distribution[List[Int]] = {
@@ -23,7 +23,7 @@ object MarkovChainExamples extends App {
     } yield sequence :+ next)
   }
 
-  val weatherCondition = chain(30)
-  println(weatherCondition.sample(1).flatten)
+  val weatherCondition = chain(30).sample(1).flatten
+  println(weatherCondition)
 
 }
