@@ -3,6 +3,9 @@ package com.probability
 import org.scalatest.{FunSpec, Matchers}
 import probability_monad.Distribution._
 
+/**
+  * Created by lshang on 9/12/16.
+  */
 class ProbabilityMonadSpec extends FunSpec with Matchers {
 
   describe("Test Probability Monad") {
