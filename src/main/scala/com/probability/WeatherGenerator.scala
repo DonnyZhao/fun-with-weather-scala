@@ -107,7 +107,7 @@ object WeatherGenerator extends App {
     * @param sample   A sample
     */
   def writeTrainingData(fileName: String, sample: String): Unit = {
-    val ROOT = "src/main/resources/"
+    val ROOT = "src/main/resources/training/"
     val writer = new BufferedWriter(new FileWriter(ROOT + fileName + ".txt", true))
     writer.write(sample)
     writer.close()
@@ -148,7 +148,9 @@ object WeatherGenerator extends App {
   def generateSample(weatherCondition: (Condition, LocalDateTime), position: Position): Unit = {
     Sensor.values
       .map(s => s -> generateSensorSample(s, weatherCondition._1))
-      .foreach { case (k, v) => writeTrainingData(k.toString, formatLIBSVM(v, position, weatherCondition._2.getDayOfWeek.getValue)) }
+      .foreach { case (k, v) =>
+        writeTrainingData(fileName = k.toString, sample = formatLIBSVM(v, position, weatherCondition._2.getDayOfWeek.getValue))
+      }
 
     val fileName = "Condition"
     writeTrainingData(fileName, formatLIBSVM(weatherCondition._1.id, position, weatherCondition._2.getDayOfWeek.getValue))
