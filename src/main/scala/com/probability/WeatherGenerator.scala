@@ -118,9 +118,9 @@ object WeatherGenerator extends App {
     *
     * @param weather  A weather variable, any of CONDITION, TEMPERATURE/HUMIDITY/PRESSURE
     * @param position A triplet of latitude, longitude and elevation
-    * @return
+    * @return A sample in LIBSVM format
     */
-  def formatLibSVM(weather: Double, position: Position, time: Int): String = {
+  def formatLIBSVM(weather: Double, position: Position, time: Int): String = {
     "%.2f".format(weather) + " " +
       "1:" + "%.2f".format(position.latitude) + " " +
       "2:" + "%.2f".format(position.longitude) + " " +
@@ -148,10 +148,10 @@ object WeatherGenerator extends App {
   def generateSample(weatherCondition: (Condition, LocalDateTime), position: Position): Unit = {
     Sensor.values
       .map(s => s -> generateSensorSample(s, weatherCondition._1))
-      .foreach { case (k, v) => writeTrainingData(k.toString, formatLibSVM(v, position, weatherCondition._2.getDayOfWeek.getValue)) }
+      .foreach { case (k, v) => writeTrainingData(k.toString, formatLIBSVM(v, position, weatherCondition._2.getDayOfWeek.getValue)) }
 
     val fileName = "Condition"
-    writeTrainingData(fileName, formatLibSVM(weatherCondition._1.id, position, weatherCondition._2.getDayOfWeek.getValue))
+    writeTrainingData(fileName, formatLIBSVM(weatherCondition._1.id, position, weatherCondition._2.getDayOfWeek.getValue))
   }
 
   // --------------------------------------------------------
