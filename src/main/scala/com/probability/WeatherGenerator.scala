@@ -15,10 +15,11 @@ import probability_monad.Distribution._
   * Generate synthetic historical data for weather condition and sensor measurements (Temperature/Humidity/Pressure)
   *
   * Simulation methodology:
-  * Two many interacting variables, we built probabilistic models af aggregated behaviours.
-  * The weather model implemented here is driven by a Markov Chain.
-  * Steps:
-  *     1. Generate a Markov Chain for weather conditions
+  *   Two many interacting variables (atmosphere, topography, geography and oceanography etc.), we built probabilistic
+  *   models af aggregated behaviours.
+  *
+  * Simulation steps:
+  *     1. Generate a Markov Chain for weather conditions as the main driver
   *     2. Label the states or events in the Markov Chain with time stamps of certain resolution
   *     3. Generate the sensor measurements conditioned on the weather condition
   *     4. Output the generated data to LIBSVM format files
@@ -165,7 +166,7 @@ object WeatherGenerator extends App {
 
   // Time stamps for the Markov Chain
   val startDate = LocalDateTime.of(2015, 1, 1, 0, 0, 0) // Historical data starting from some time last year
-  val timeStamps = states.indices.map(i => startDate.plusDays(i))
+  val timeStamps = states.indices.map(i => startDate.plusDays(i)) // Time resolution = Day
   val timeStampedWeatherConditions = states.zip(timeStamps)
 
   // Generate training sets
