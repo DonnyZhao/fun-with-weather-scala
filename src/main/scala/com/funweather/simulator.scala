@@ -7,6 +7,7 @@ import org.apache.spark.mllib.tree.model.RandomForestModel
 import org.apache.spark.mllib.util.MLUtils
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
+import probability_monad.Distribution._
 
 /**
   * Created by lshang on 8/21/16.

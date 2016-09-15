@@ -20,8 +20,8 @@ import com.funweather.Condition.Condition
   */
 case class Measurement(number: Int,
                        position: Position, localTime: LocalTime,
-                       location: Option[String] = None,
-                       condition: Option[Condition] = None,
+                       location: Option[String] = Option("Unknown"),
+                       condition: Option[Condition] = Option(Condition.Unknown),
                        temperature: Option[Temperature] = Option(Temperature()),
                        pressure: Option[Pressure] = Option(Pressure()),
                        humidity: Option[Humidity] = Option(Humidity())
@@ -29,7 +29,7 @@ case class Measurement(number: Int,
   measurement =>
 
   def emit(): Measurement = {
-    require(measurement.condition.isEmpty, "Measurement has weather data already")
+    require(measurement.condition.get.equals(Condition.Unknown), "Measurement has weather data already")
     require(measurement.temperature.get.value.isNaN, "Measurement has weather data already")
     require(measurement.pressure.get.value.isNaN, "Measurement has weather data already")
     require(measurement.humidity.get.value.isNaN, "Measurement has weather data already")
@@ -47,8 +47,8 @@ case class Measurement(number: Int,
   }
 
   override def toString = {
-    "%d|%s|%s|%s|%s|%+.2f|%.2f|%.2f".format(number, location.getOrElse("None"), position.toString, localTime.timeStamp,
-      condition.getOrElse("None"), temperature.get.value, pressure.get.value, humidity.get.value)
+    "%d|%s|%s|%s|%s|%+.2f|%.2f|%.2f".format(number, location.get, position.toString, localTime.timeStamp,
+      condition.get, temperature.get.value, pressure.get.value, humidity.get.value)
   }
 
 }

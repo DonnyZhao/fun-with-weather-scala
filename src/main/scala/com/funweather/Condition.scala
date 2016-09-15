@@ -8,6 +8,6 @@ package com.funweather
 
 object Condition extends Enumeration {
   type Condition = Value
-  val Rain, Snow, Sunny = Value
+  val Rain, Snow, Sunny, Unknown = Value
 }
 

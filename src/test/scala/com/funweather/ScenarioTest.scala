@@ -10,7 +10,7 @@ class ScenarioTest extends UnitTest("Scenario") {
       Measurement(1, Position(0.0, 0.0, 0.0), LocalTime("2016-08-20T00:00:00")),
       Measurement(2, Position(-40.0, 135, 80.0), LocalTime("2016-08-20T00:00:00"))
     )
-    Scenario("Sydney", measurements).measurements.map(m => m.condition.isEmpty shouldEqual true)
+    Scenario("Sydney", measurements).measurements.foreach(m => m.condition.get shouldEqual Condition.Unknown)
     Scenario("Sydney", measurements).emit.foreach(m => m.condition.isEmpty shouldEqual false)
   }
 
