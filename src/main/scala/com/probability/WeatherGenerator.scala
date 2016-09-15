@@ -46,7 +46,7 @@ object WeatherGenerator extends App {
     * @return A sequence of events simulating the weather condition
     */
   def chain(num: Int): Distribution[List[Int]] = {
-    val firstDist = discreteUniform(0 to 2) // can be random
+    val firstDist = discreteUniform(0 to Condition.values.size - 2) // exclude Condition.Unknown
     val first = firstDist.sample(1).head
     always(List(first)).markov(num - 1)(sequence => for {
       next <- transition(sequence.last)
