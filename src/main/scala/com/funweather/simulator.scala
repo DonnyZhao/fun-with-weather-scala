@@ -7,6 +7,7 @@ import org.apache.spark.mllib.tree.model.RandomForestModel
 import org.apache.spark.mllib.util.MLUtils
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
+
 import probability_monad.Distribution._
 
 /**
@@ -126,7 +127,8 @@ object Simulator extends SparkBase with TrainingData {
     * @return A generated weather sample containing CONDITION, TEMPERATURE, PRESSURE and HUMIDITY
     */
   def generateSample(localTime: LocalTime, position: Position): Map[String, Double] = {
-    val dayOfWeek = localTime.localDateTime.getDayOfWeek.getValue //Feature engineering
+    val noise = discreteUniform(-1 to 1).sample(1).head // inject randomness to simulate sensor noise
+    val dayOfWeek = localTime.localDateTime.getDayOfWeek.getValue + noise //Feature engineering
     val newPoint = Vectors.dense(position.latitude, position.longitude, position.elevation, dayOfWeek)
 
     val predictions = models.map { case (k, v) => (k, v.predict(newPoint)) }

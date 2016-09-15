@@ -60,9 +60,9 @@ object WeatherGenerator extends App {
     * @return A temperature value
     */
   def generateTemperature(condition: Condition) = condition match {
-    case Condition.Snow => 23.5 + normal.sample(1).head
-    case Condition.Rain => 30.5 + normal.sample(1).head
-    case Condition.Sunny => 5.0 + normal.sample(1).head
+    case Condition.Snow => -10.0 + 5.0 *  normal.sample(1).head
+    case Condition.Rain => 20.5 + 5.0 * normal.sample(1).head
+    case Condition.Sunny => 3.0 + 5.0 * normal.sample(1).head
   }
 
   /**

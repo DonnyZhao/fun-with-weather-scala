@@ -19,14 +19,6 @@ class SimulatorTest extends UnitTest("Simulator") {
     sample("Humidity").isInstanceOf[Double] shouldEqual true
   }
 
-  it should "produce the same result with a repeating time&location pair" in {
-    val localTime = LocalTime("2016-08-22T12:00:00")
-    val position = Position(-33.86, 151.21, 39.00)
-    val sample = Simulator.generateSample(localTime, position)
-    val sampleAgain = Simulator.generateSample(localTime, position)
-    sample.toSet.diff(sampleAgain.toSet).size shouldEqual 0
-  }
-
   it should "build and return one classification model, three regression models" in {
     val models = Simulator.buildModels()
     models.size shouldEqual 4
