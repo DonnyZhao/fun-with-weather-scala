@@ -162,6 +162,7 @@ object WeatherGenerator extends App {
   // Generate Training Sets
   // --------------------------------------------------------
   for ( v <- LocationPosition.map.values) {
+    // Markov Chain
     val numOfSamples = discreteUniform(1 to 10).sample(1).head
     val states = chain(numOfSamples).sample(1).flatten.map(s => Condition(s))
 
@@ -169,6 +170,8 @@ object WeatherGenerator extends App {
     val startDate = LocalDateTime.of(2015, 1, 1, 0, 0, 0) // Historical data starting from some time last year
     val timeStamps = states.indices.map(i => startDate.plusDays(i)) // Time resolution = Day
     val timeStampedWeatherConditions = states.zip(timeStamps)
+
+    // generate samples
     timeStampedWeatherConditions.foreach(c => generateSample(c, v))
   }
 
