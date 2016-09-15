@@ -36,7 +36,7 @@ object WeatherGenerator extends App {
   def transition(condition: Int): Distribution[Int] = condition match {
     case 0 => discrete(0 -> 1 / 3, 1 -> 1 / 3, 2 -> 1 / 3)
     case 1 => discrete(0 -> 0.10, 1 -> 0.80, 2 -> 0.10)
-    case 2 => discrete(0 -> 0.99, 1 -> 0.01, 2 -> 0.00)
+    case 2 => discrete(0 -> 0.90, 1 -> 0.05, 2 -> 0.05)
   }
 
   /**
@@ -46,7 +46,8 @@ object WeatherGenerator extends App {
     * @return A sequence of events simulating the weather condition
     */
   def chain(num: Int): Distribution[List[Int]] = {
-    val first = 0 // can be random
+    val firstDist = discreteUniform(0 to 2) // can be random
+    val first = firstDist.sample(1).head
     always(List(first)).markov(num - 1)(sequence => for {
       next <- transition(sequence.last)
     } yield sequence :+ next)
@@ -160,18 +161,14 @@ object WeatherGenerator extends App {
   // --------------------------------------------------------
   // Generate Training Sets
   // --------------------------------------------------------
-  // Markov Chain for weather conditions
-  val numOfSamples = 30
-  val states = chain(numOfSamples).sample(1).flatten.map(s => Condition(s))
+  for ( v <- LocationPosition.map.values) {
+    val numOfSamples = discreteUniform(1 to 10).sample(1).head
+    val states = chain(numOfSamples).sample(1).flatten.map(s => Condition(s))
 
-  // Time stamps for the Markov Chain
-  val startDate = LocalDateTime.of(2015, 1, 1, 0, 0, 0) // Historical data starting from some time last year
-  val timeStamps = states.indices.map(i => startDate.plusDays(i)) // Time resolution = Day
-  val timeStampedWeatherConditions = states.zip(timeStamps)
-
-  // Generate training sets
-  // Assume all locations share the same Markov Chain
-  LocationPosition.map.values.foreach { v =>
+    // Time stamps for the Markov Chain
+    val startDate = LocalDateTime.of(2015, 1, 1, 0, 0, 0) // Historical data starting from some time last year
+    val timeStamps = states.indices.map(i => startDate.plusDays(i)) // Time resolution = Day
+    val timeStampedWeatherConditions = states.zip(timeStamps)
     timeStampedWeatherConditions.foreach(c => generateSample(c, v))
   }
 
